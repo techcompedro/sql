@@ -44,6 +44,33 @@ def delete_nome(nome):
         return jsonify({"erro": "Usuário não encontrado"}), 404
         
         
+@app.route('/veiculos')
+def todos_veiculos():
+    veiculo = session.query(Veiculos).all()
+    if veiculo:
+        return([
+            {
+                'nome': veiculos.nome,
+                'marca': veiculos.marca,
+                'capacidade do tanque': veiculos.capacidade_tanque,
+                'cor': veiculos.cor,
+                'ano de fabricção': veiculos.ano_fabricacao
+        }for veiculos in veiculo
+            ])
+    else:
+        return jsonify({"erro": "Usuário não encontrado"}), 404
+
+@app.route('/veiculos/<nome>')
+def veiculo_capacidade_tanque(nome):
+    veiculo = session.query(Veiculos).filter_by(nome=nome).first()
+    if veiculo:
+        return jsonify({
+            'capacidade do tanque':veiculo.capacidade_tanque
+        })
+    else:
+        return jsonify({"erro": "Usuário não encontrado"}), 404
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
